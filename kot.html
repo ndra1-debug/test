@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Order Ticket</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #kot-container, #kot-container * {
+                visibility: visible;
+            }
+            #kot-container {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div id="kot-container" class="p-8">
+        <!-- KOT content will be injected here -->
+    </div>
+    <script src="kot.js"></script>
+</body>
+</html>

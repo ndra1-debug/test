@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1691353200000,
+        "customerName": "John Doe",
+        "eventDate": "2025-08-10",
+        "eventTime": "18:00",
+        "numGuests": 50,
+        "total": 5000000,
+        "status": "Deposit Paid",
+        "menuItems": [
+            { "id": 1, "name": "Nasi Goreng", "price": 25000 },
+            { "id": 3, "name": "Sate Ayam", "price": 30000 }
+        ],
+        "addons": [
+            { "name": "Tableware", "price": 5000 }
+        ]
+    },
+    {
+        "id": 1691526000000,
+        "customerName": "Jane Smith",
+        "eventDate": "2025-08-12",
+        "eventTime": "19:00",
+        "numGuests": 100,
+        "total": 15000000,
+        "status": "Fully Paid",
+        "menuItems": [
+            { "id": 5, "name": "Beef Burger", "price": 45000 },
+            { "id": 6, "name": "Spaghetti Carbonara", "price": 55000 }
+        ],
+        "addons": [
+            { "name": "Tableware", "price": 5000 },
+            { "name": "Servers", "price": 10000 }
+        ]
+    }
+]

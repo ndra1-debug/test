@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div id="login-container" class="flex items-center justify-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+            <h1 class="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+            <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded-lg mb-4">
+            <button id="login-btn" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Login</button>
+        </div>
+    </div>
+
+    <div id="dashboard-container" class="hidden p-8">
+        <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-2">Confirmed Events (Next 7 Days)</h2>
+                <p id="confirmed-events" class="text-3xl font-bold">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-2">New Inquiries (Awaiting Deposit)</h2>
+                <p id="new-inquiries" class="text-3xl font-bold">0</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-2">Total Revenue (This Month)</h2>
+                <p id="total-revenue" class="text-3xl font-bold">Rp 0</p>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4">Upcoming Events</h2>
+        <div id="upcoming-events" class="bg-white p-6 rounded-lg shadow-lg mb-8">
+            <!-- Upcoming events will be injected here -->
+        </div>
+
+        <h2 class="text-2xl font-bold mb-4">Order Management</h2>
+        <div id="order-management" class="bg-white p-6 rounded-lg shadow-lg">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left">Customer Name</th>
+                        <th class="text-left">Event Date</th>
+                        <th class="text-left">Status</th>
+                        <th class="text-left">Guests</th>
+                        <th class="text-left">Total</th>
+                        <th class="text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                    <!-- Orders will be injected here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

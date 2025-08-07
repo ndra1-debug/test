@@ -9,21 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBar = document.getElementById('search-bar');
     const filterCuisine = document.getElementById('filter-cuisine');
 
-    const menu = [
-        { id: 1, name: 'Nasi Goreng', description: 'A classic Indonesian fried rice dish, seasoned with sweet soy sauce, shrimp paste, and a blend of spices. Served with a fried egg, pickled vegetables, and prawn crackers.', price: 25000, image: 'https://via.placeholder.com/400x300', ingredients: ['Rice', 'Sweet Soy Sauce', 'Shrimp Paste', 'Egg', 'Pickled Vegetables'], allergens: ['Shellfish'], cuisine: 'indonesian' },
-        { id: 2, name: 'Mie Goreng', description: 'Spicy and savory fried noodles, stir-fried with chicken, prawns, and vegetables. A staple of Indonesian street food.', price: 22000, image: 'https://via.placeholder.com/400x300', ingredients: ['Noodles', 'Chicken', 'Prawns', 'Vegetables', 'Spices'], allergens: ['Gluten', 'Shellfish'], cuisine: 'indonesian' },
-        { id: 3, name: 'Sate Ayam', description: 'Tender chicken skewers marinated in a flavorful blend of spices and grilled to perfection. Served with a rich and creamy peanut sauce.', price: 30000, image: 'https://via.placeholder.com/400x300', ingredients: ['Chicken', 'Peanut Sauce', 'Spices'], allergens: ['Peanuts'], cuisine: 'indonesian' },
-        { id: 4, name: 'Gado-Gado', description: 'A vibrant Indonesian salad featuring a mix of blanched vegetables, boiled potatoes, hard-boiled eggs, and tofu, all drizzled with a delicious peanut sauce dressing.', price: 20000, image: 'https://via.placeholder.com/400x300', ingredients: ['Mixed Vegetables', 'Potatoes', 'Eggs', 'Tofu', 'Peanut Sauce'], allergens: ['Peanuts', 'Soy'], cuisine: 'indonesian' },
-        { id: 5, name: 'Beef Burger', description: 'A classic American burger with a juicy beef patty, lettuce, tomato, and cheese.', price: 45000, image: 'https://via.placeholder.com/400x300', ingredients: ['Beef Patty', 'Lettuce', 'Tomato', 'Cheese', 'Bun'], allergens: ['Gluten', 'Dairy'], cuisine: 'western' },
-        { id: 6, name: 'Spaghetti Carbonara', description: 'A creamy pasta dish with bacon, eggs, and Parmesan cheese.', price: 55000, image: 'https://via.placeholder.com/400x300', ingredients: ['Spaghetti', 'Bacon', 'Eggs', 'Parmesan Cheese'], allergens: ['Gluten', 'Dairy', 'Eggs'], cuisine: 'western' },
-        { id: 7, name: 'Korean Fried Chicken', description: 'Crispy fried chicken coated in a sweet and spicy gochujang sauce.', price: 65000, image: 'https://via.placeholder.com/400x300', ingredients: ['Chicken', 'Gochujang', 'Soy Sauce', 'Garlic'], allergens: ['Gluten', 'Soy'], cuisine: 'asian' },
-        { id: 8, name: 'Pad Thai', description: 'A popular Thai noodle dish with shrimp, tofu, and a tamarind-based sauce.', price: 60000, image: 'https://via.placeholder.com/400x300', ingredients: ['Rice Noodles', 'Shrimp', 'Tofu', 'Tamarind', 'Peanuts'], allergens: ['Shellfish', 'Peanuts'], cuisine: 'asian' }
-    ];
-
+    let menu = [];
     let cart = [];
 
+    async function fetchMenu() {
+        try {
+            const response = await fetch('menu.json');
+            menu = await response.json();
+            renderMenu();
+        } catch (error) {
+            console.error('Error fetching menu:', error);
+        }
+    }
+
     function renderMenu(searchTerm = '', cuisine = 'all') {
-        menuItemsContainer.innerHTML = '';
+        if (!menu) return;
+        const fragment = document.createDocumentFragment();
         const filteredMenu = menu.filter(item => {
             const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesCuisine = cuisine === 'all' || item.cuisine === cuisine;
@@ -43,8 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button data-id="${item.id}" class="add-to-cart-btn bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add to Cart</button>
                 </div>
             `;
-            menuItemsContainer.appendChild(menuItemElement);
+            fragment.appendChild(menuItemElement);
         });
+
+        menuItemsContainer.innerHTML = '';
+        menuItemsContainer.appendChild(fragment);
     }
 
     function renderCart() {
@@ -96,20 +100,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openModal(itemId) {
         const item = menu.find(item => item.id === itemId);
-        modal.innerHTML = `
-            <img src="${item.image}" alt="${item.name}" class="w-full h-64 object-cover rounded-md mb-4">
-            <h2 class="text-3xl font-bold mb-2">${item.name}</h2>
-            <p class="text-gray-700 mb-4">${item.description}</p>
-            <h3 class="text-xl font-bold mb-2">Ingredients</h3>
-            <p class="text-gray-600 mb-4">${item.ingredients.join(', ')}</p>
-            <h3 class="text-xl font-bold mb-2">Allergens</h3>
-            <p class="text-red-500 font-bold mb-4">${item.allergens.join(', ')}</p>
-            <div class="flex justify-between items-center">
-                <span class="font-bold text-2xl">Rp ${item.price.toLocaleString()}</span>
-                <button data-id="${item.id}" class="add-to-cart-btn-modal bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Add to Cart</button>
-            </div>
-            <button id="close-modal" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900">&times;</button>
-        `;
+        modal.innerHTML = ''; // Clear previous content
+
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+        img.className = 'w-full h-64 object-cover rounded-md mb-4';
+
+        const name = document.createElement('h2');
+        name.className = 'text-3xl font-bold mb-2';
+        name.textContent = item.name;
+
+        const description = document.createElement('p');
+        description.className = 'text-gray-700 mb-4';
+        description.textContent = item.description;
+
+        const ingredientsTitle = document.createElement('h3');
+        ingredientsTitle.className = 'text-xl font-bold mb-2';
+        ingredientsTitle.textContent = 'Ingredients';
+
+        const ingredients = document.createElement('p');
+        ingredients.className = 'text-gray-600 mb-4';
+        ingredients.textContent = item.ingredients.join(', ');
+
+        const allergensTitle = document.createElement('h3');
+        allergensTitle.className = 'text-xl font-bold mb-2';
+        allergensTitle.textContent = 'Allergens';
+
+        const allergens = document.createElement('p');
+        allergens.className = 'text-red-500 font-bold mb-4';
+        allergens.textContent = item.allergens.join(', ');
+
+        const footer = document.createElement('div');
+        footer.className = 'flex justify-between items-center';
+
+        const price = document.createElement('span');
+        price.className = 'font-bold text-2xl';
+        price.textContent = `Rp ${item.price.toLocaleString()}`;
+
+        const addToCartBtn = document.createElement('button');
+        addToCartBtn.className = 'add-to-cart-btn-modal bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600';
+        addToCartBtn.textContent = 'Add to Cart';
+        addToCartBtn.setAttribute('data-id', item.id);
+
+        const closeModalBtn = document.createElement('button');
+        closeModalBtn.id = 'close-modal';
+        closeModalBtn.className = 'absolute top-4 right-4 text-gray-600 hover:text-gray-900';
+        closeModalBtn.innerHTML = '&times;';
+
+        footer.appendChild(price);
+        footer.appendChild(addToCartBtn);
+
+        modal.appendChild(img);
+        modal.appendChild(name);
+        modal.appendChild(description);
+        modal.appendChild(ingredientsTitle);
+        modal.appendChild(ingredients);
+        modal.appendChild(allergensTitle);
+        modal.appendChild(allergens);
+        modal.appendChild(footer);
+        modal.appendChild(closeModalBtn);
+
         modalContainer.classList.remove('hidden');
     }
 
@@ -166,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    renderMenu();
+    fetchMenu();
     renderCart();
 
     // Package Builder Wizard
@@ -210,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function renderPackageMenuItems() {
+        if (!menu) return;
         packageMenuItemsContainer.innerHTML = '';
         menu.forEach(item => {
             const menuItemElement = document.createElement('div');
@@ -349,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderCalendar(year, month) {
+        if (!calendarDaysContainer) return;
         calendarDaysContainer.innerHTML = '';
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);

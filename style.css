@@ -1,0 +1,11 @@
+.menu-item {
+    transition: transform 0.2s ease-in-out;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+}
+
+.add-to-cart-btn {
+    transition: background-color 0.3s;
+}

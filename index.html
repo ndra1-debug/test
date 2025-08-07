@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div id="app" class="container mx-auto p-4">
+        <header class="text-center my-8">
+            <h1 class="text-4xl font-bold text-gray-800">Catering Service</h1>
+            <p class="text-gray-600">Delicious food, delivered to you.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div id="menu" class="md:col-span-2">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Menu</h2>
+                <div id="menu-items" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Menu items will be injected here by JavaScript -->
+                </div>
+            </div>
+
+            <aside id="cart" class="md:col-span-1 bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800 border-b pb-2">Your Order</h2>
+                <div id="cart-items" class="mb-4">
+                    <!-- Cart items will be injected here by JavaScript -->
+                    <p class="text-gray-500">Your cart is empty.</p>
+                </div>
+                <div class="border-t pt-4">
+                    <div class="flex justify-between items-center font-bold text-lg">
+                        <span>Total</span>
+                        <span id="total-price">Rp 0</span>
+                    </div>
+                    <button id="order-button" class="mt-4 w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition-colors disabled:bg-gray-400" disabled>
+                        Order on WhatsApp
+                    </button>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

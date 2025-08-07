@@ -1,11 +1,37 @@
+:root {
+    --primary-color: #4f46e5;
+    --primary-dark-color: #4338ca;
+}
+
+.bg-primary {
+    background-color: var(--primary-color);
+}
+
+.bg-primary-dark {
+    background-color: var(--primary-dark-color);
+}
+
 .menu-item {
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .menu-item:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .add-to-cart-btn {
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-to-cart-btn:hover {
+    transform: scale(1.05);
+}
+
+#order-button {
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#order-button:hover:not(:disabled) {
+    transform: scale(1.05);
 }

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartItemsContainer = document.getElementById('cart-items');
     const totalPriceElement = document.getElementById('total-price');
     const orderButton = document.getElementById('order-button');
+    const cartElement = document.getElementById('cart');
 
     const menu = [
         { id: 1, name: 'Nasi Goreng', description: 'Classic Indonesian fried rice.', price: 25000, image: 'https://via.placeholder.com/150' },
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             cart.forEach(cartItem => {
                 const cartItemElement = document.createElement('div');
-                cartItemElement.className = 'flex justify-between items-center mb-2';
+                cartItemElement.className = 'flex justify-between items-center mb-2 cart-item-animation';
                 cartItemElement.innerHTML = `
                     <div>
                         <p class="font-bold">${cartItem.name}</p>
@@ -68,6 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
             cart.push({ ...itemToAdd, quantity: 1 });
         }
         renderCart();
+        animateCart();
+    }
+
+    function animateCart() {
+        cartElement.classList.add('animate-pulse');
+        setTimeout(() => {
+            cartElement.classList.remove('animate-pulse');
+        }, 500);
     }
 
     menuItemsContainer.addEventListener('click', (e) => {
@@ -88,6 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
+    });
+
+    // Smooth scrolling for the "View Our Menu" button
+    document.querySelector('a[href="#menu"]').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
     });
 
     renderMenu();

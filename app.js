@@ -293,26 +293,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         total *= package.numGuests;
 
-        const packageItem = {
-            id: Date.now(),
-            name: 'Custom Package',
-            price: total,
-            quantity: 1,
-            description: `Package for ${package.numGuests} guests on ${package.eventDate} at ${package.eventTime}`
+        const orderDetails = {
+            ...package,
+            total: total
         };
-        cart.push(packageItem);
-        renderCart();
-        animateCart();
-        // Reset package builder
-        currentStep = 1;
-        showStep(1);
-        package = {
-            eventDate: '',
-            eventTime: '',
-            numGuests: 1,
-            menuItems: [],
-            addons: []
-        };
+
+        localStorage.setItem('orderDetails', JSON.stringify(orderDetails));
+        window.location.href = 'checkout.html';
     });
 
     const packages = {
@@ -339,4 +326,74 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // Calendar
+    const calendarDaysContainer = document.getElementById('calendar-days');
+    const monthYearElement = document.getElementById('month-year');
+    const prevMonthButton = document.getElementById('prev-month');
+    const nextMonthButton = document.getElementById('next-month');
+    const eventDateInput = document.getElementById('event-date');
+
+    let currentDate = new Date();
+    let bookedDates = [];
+
+    async function fetchBookedDates() {
+        try {
+            const response = await fetch('booked-dates.json');
+            const data = await response.json();
+            bookedDates = data.bookedDates;
+            renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        } catch (error) {
+            console.error('Error fetching booked dates:', error);
+        }
+    }
+
+    function renderCalendar(year, month) {
+        calendarDaysContainer.innerHTML = '';
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startDay = firstDay.getDay();
+
+        monthYearElement.textContent = `${firstDay.toLocaleString('default', { month: 'long' })} ${year}`;
+
+        for (let i = 0; i < startDay; i++) {
+            const emptyDay = document.createElement('div');
+            calendarDaysContainer.appendChild(emptyDay);
+        }
+
+        for (let i = 1; i <= daysInMonth; i++) {
+            const dayElement = document.createElement('div');
+            dayElement.textContent = i;
+            dayElement.className = 'p-2 text-center cursor-pointer';
+            const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+
+            if (bookedDates.includes(dateString)) {
+                dayElement.classList.add('bg-red-500', 'text-white', 'cursor-not-allowed');
+                dayElement.setAttribute('disabled', true);
+            } else {
+                dayElement.classList.add('hover:bg-blue-200');
+            }
+
+            dayElement.addEventListener('click', () => {
+                if (!dayElement.hasAttribute('disabled')) {
+                    eventDateInput.value = dateString;
+                }
+            });
+
+            calendarDaysContainer.appendChild(dayElement);
+        }
+    }
+
+    prevMonthButton.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    });
+
+    nextMonthButton.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    });
+
+    fetchBookedDates();
 });

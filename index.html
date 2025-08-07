@@ -81,17 +81,26 @@
                     <!-- Step 1: Event Details -->
                     <div id="step-1">
                         <h3 class="text-2xl font-bold mb-4">Step 1: Event Details</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-xl font-bold mb-4">Select a Date</h4>
+                                <div id="calendar" class="bg-white p-4 rounded-lg shadow-inner">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <button id="prev-month" class="text-lg font-bold">&lt;</button>
+                                        <h5 id="month-year" class="text-lg font-bold"></h5>
+                                        <button id="next-month" class="text-lg font-bold">&gt;</button>
+                                    </div>
+                                    <div id="calendar-days" class="grid grid-cols-7 gap-2">
+                                        <!-- Calendar days will be injected here -->
+                                    </div>
+                                </div>
+                            </div>
                             <div>
                                 <label for="event-date" class="block font-bold mb-2">Event Date</label>
                                 <input type="date" id="event-date" class="w-full p-2 border rounded-lg">
-                            </div>
-                            <div>
-                                <label for="event-time" class="block font-bold mb-2">Event Time</label>
+                                <label for="event-time" class="block font-bold mb-2 mt-4">Event Time</label>
                                 <input type="time" id="event-time" class="w-full p-2 border rounded-lg">
-                            </div>
-                            <div>
-                                <label for="num-guests" class="block font-bold mb-2">Number of Guests</label>
+                                <label for="num-guests" class="block font-bold mb-2 mt-4">Number of Guests</label>
                                 <input type="number" id="num-guests" min="1" value="1" class="w-full p-2 border rounded-lg">
                             </div>
                         </div>
